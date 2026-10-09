@@ -8,117 +8,315 @@
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
 <style>
-:root{--bg:#ECEFE9;--ink:#1B2340;--mute:#5E6783;--line:#CBD1C8;--gold:#E3A21A;--ok:#1F7A57;--bad:#C2402A}
-@media(prefers-color-scheme:dark){:root{--bg:#10162B;--ink:#E9ECF5;--mute:#98A1BD;--line:#2A3354}}
+:root{--bg:#ECEFE9;--ink:#1B2340;--mute:#5E6783;--line:#CBD1C8;--gold:#E3A21A;--ok:#1F7A57;--bad:#C2402A;--field:#fff}
+@media(prefers-color-scheme:dark){:root{--bg:#10162B;--ink:#E9ECF5;--mute:#98A1BD;--line:#2A3354;--field:#1A2240}}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 "Avenir Next","Segoe UI",Roboto,system-ui,sans-serif;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
 main{max-width:560px;margin:0 auto;padding:20px 18px 48px}
 h1{font-size:15px;font-weight:700;margin:0}
-#when{margin:2px 0 24px;color:var(--mute);font-size:14px}
+#when{margin:2px 0 22px;color:var(--mute);font-size:14px}
 section{margin:0 0 26px}
 .rn{margin:0;color:var(--mute);font-size:14px}
 h2{font-size:28px;line-height:1.1;margin:2px 0 10px;font-weight:800}
+h3{font-size:17px;margin:22px 0 6px}
 .big{font-size:44px;line-height:1;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
-.mt{position:relative;height:10px;background:var(--line);border-radius:5px;margin:12px 0 4px;overflow:hidden}
-.mt i{position:absolute;inset:0 auto 0 0}
-.mt u{position:absolute;top:0;bottom:0;left:80%;width:2px;background:var(--ink);opacity:.55}
-.mk{font-size:13px;color:var(--mute);margin:0 0 14px}
+.mt{height:10px;background:var(--line);border-radius:5px;margin:12px 0 4px;overflow:hidden}
+.mt i{display:block;height:100%}
+.mk{font-size:13px;color:var(--mute);margin:4px 0 14px}
+.warn{color:var(--bad);font-weight:600}
 ul{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
 li{display:flex;gap:12px;align-items:flex-start;padding:14px 0;border-bottom:1px solid var(--line)}
-.ck{flex:none;width:30px;height:30px;border-radius:50%;border:2px solid var(--ink);background:none;position:relative}
-.ck[aria-pressed=true]{background:var(--ok);border-color:var(--ok)}
-.ck[aria-pressed=true]::after{content:"";position:absolute;left:9px;top:3px;width:7px;height:13px;border:solid #fff;border-width:0 3px 3px 0;transform:rotate(45deg)}
+.ck{flex:none;width:30px;height:30px;border-radius:50%;border:2px solid var(--ink);background:none;position:relative;cursor:pointer}
+.ck[data-s=got]{background:var(--ok);border-color:var(--ok)}
+.ck[data-s=ord]{background:var(--gold);border-color:var(--gold)}
+.ck[data-s=got]::after,.ck[data-s=ord]::after{content:"";position:absolute;left:9px;top:3px;width:7px;height:13px;border:solid #fff;border-width:0 3px 3px 0;transform:rotate(45deg)}
 .tx{flex:1;min-width:0}
 .tx b{display:block;font-weight:650}
 .tx span{display:block;font-size:14px;color:var(--mute)}
-li.b .tx b{text-decoration:line-through;color:var(--mute)}
+li.done .tx b{text-decoration:line-through;color:var(--mute)}
 li.x{opacity:.55}
-.pr{flex:none;background:none;border:0;border-bottom:1px dashed var(--mute);font:inherit;font-weight:700;color:var(--ink);padding:2px 0;min-height:32px;font-variant-numeric:tabular-nums}
-.lk{background:none;border:0;padding:6px 0;font:inherit;font-size:13px;color:var(--mute);text-decoration:underline}
-button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.pr{flex:none;background:none;border:0;border-bottom:1px dashed var(--mute);font:inherit;font-weight:700;color:var(--ink);padding:2px 0;min-height:32px;font-variant-numeric:tabular-nums;cursor:pointer}
+.lk{background:none;border:0;padding:6px 12px 6px 0;font:inherit;font-size:13px;color:var(--mute);text-decoration:underline;cursor:pointer}
+.bt{background:var(--ink);color:var(--bg);border:0;border-radius:8px;padding:10px 14px;font:inherit;font-weight:650;cursor:pointer;margin:6px 8px 6px 0}
+.bt.alt{background:none;color:var(--ink);border:2px solid var(--ink)}
+button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 details{border-top:1px solid var(--line);padding:12px 0}
 summary{font-weight:650;cursor:pointer}
 details ul{margin-top:8px}
 li.ln{justify-content:space-between;align-items:baseline;padding:10px 0}
 .ln small{display:block;color:var(--mute);font-size:13px}
+.ln b{font-variant-numeric:tabular-nums;white-space:nowrap}
 .sm{font-size:13px;color:var(--mute);margin:10px 0 0}
+label{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+input{font:inherit;color:var(--ink);background:var(--field);border:1px solid var(--line);border-radius:6px;padding:6px 8px;max-width:11em}
+#pst{min-height:1.2em}
+@media(prefers-reduced-motion:no-preference){.mt i{transition:width .3s}}
 </style></head>
 <body><main>
 <h1>Fortnight Shop</h1>
 <p id="when">&nbsp;</p>
 <div id="app"></div>
-<div id="rem"></div>
+<input type="file" id="restore" accept="application/json,.json" hidden>
 </main>
+<script src="config.js"></script>
 <script>
-const CAP=500,GOAL=400,W={s:"Buy locally",c:"Temu",a:"Temu",h:"Temu"},N={s:"skin",c:"clothes",a:"accessories",h:"home"};
-/* [category, item, estimated GH₵, note] - prices are estimates; tap a price in the app to correct it */
+/* ---------- the plan ----------
+   [id, kind, name, estimated GH₵, note, days it lasts (skincare only), short name]
+   kind: s = skincare (buy locally), c = clothes, a = accessories, h = home (Temu).
+   Prices and how long things last are estimates. Tap a price in the app to correct it. */
 const R=[
-["Skin basics",[["s","CeraVe Hydrating Cleanser, 236 ml",150,"Gentle, non-foaming. Use morning and night."],["s","Face sunscreen SPF 50 (Biore UV Aqua Rich or Nivea Sun)",150,"Every morning. Stops acne marks from darkening."],["s","Body wash for dry skin (Dove or Nivea Creme)",90,"Skip heavily scented or foaming gels."]]],
-["Moisturisers",[["s","CeraVe Daily Moisturizing Lotion, 355 ml",270,"Face and neck. Fragrance-free and non-comedogenic."],["s","Body lotion (Vaseline Intensive Care or Nivea)",100,"Apply within 3 minutes of showering."]]],
-["Work shirts and chinos",[["c","2 short-sleeve button shirts, oxford or linen blend",170,"Small standard or camp collar. Fit the chest, not loose."],["c","Straight-leg chinos, khaki or navy",140,"Straight legs balance a slim frame."],["a","Leather belt, black or brown",50,"Worn even with untucked shirts."]]],
-["Serums",[["s","Hyaluronic acid serum (The Ordinary 2% + B5)",180,"Apply to damp skin, then moisturiser. Start with this one."],["s","Niacinamide serum (The Ordinary 10% + Zinc)",180,"Add it 2 weeks after the HA serum, 3 nights a week at first."]]],
-["Home cleaning starter",[["h","Colour-safe laundry detergent pods",110,"For the washing machine."],["h","Microfibre cloths, 12-pack",50,"Dusting, surfaces, screens."],["h","Scrub brush set for kitchen and bathroom",60,""],["h","Toilet brush with holder",60,""]]],
-["Casual tees and jeans",[["c","3 heavyweight cotton tees (white, black, olive)",150,"Thicker cotton holds shape on a lean frame."],["c","Straight-leg jeans or cargo trousers",170,"Avoid skinny cuts."],["c","Ankle socks, 6 pairs",50,""]]],
-["Sneakers",[["c","Minimal sneakers, white or off-white",250,"Check photo reviews and sizing notes."],["a","Sneaker cleaning kit",50,""]]],
-["Home and sleep top-up",[["c","2 soft lounge tees",80,"Skip anything you already own."],["c","2 pairs of sleep shorts",90,""],["c","Slides",60,""]]],
-["Accessories",[["a","Sunglasses, UV400, round or soft-square",60,"Softer frames suit a slim face."],["a","Thin silver chain, 2 to 3 mm",60,"A slim width suits a slender neck."],["a","Minimal bracelet",40,""],["a","Plain cap",45,""],["a","Slim wallet",70,""]]],
-["Smart outfit for interviews and meetings",[["c","Slim-fit oxford shirt, white or light blue",110,"Wear untucked or tucked."],["c","Dark tailored trousers",170,""],["c","Dark socks, 3 pairs",40,""]]],
-["Smart shoes and bag",[["c","Loafers or derby shoes, black or brown",200,""],["a","Sling or crossbody bag",100,"Fits a phone, charger and notebook."]]],
-["Events outfit",[["c","Fitted kaftan or African-print shirt",150,"Weddings, church, funerals."],["c","Matching or neutral trousers",130,""]]],
-["Gym kit",[["c","2 breathable training tees",80,""],["c","2 training shorts",80,""]]],
-["Home cleaning round two",[["h","Spin mop and bucket",200,""],["h","Foldable laundry hamper",80,""],["h","Lint roller or clothes brush",30,""]]],
-["Skincare refill",[["s","Whichever is running low: cleanser, sunscreen or moisturiser",300,"Sunscreen usually runs out first."]]]
+["Skin basics",[["cln","s","CeraVe Hydrating Cleanser, 236 ml",150,"Gentle, non-foaming. Use morning and night.",75,"Cleanser"],["spf","s","Face sunscreen SPF 50 (Biore UV Aqua Rich or Nivea Sun)",150,"Every morning. Stops acne marks from darkening.",40,"Sunscreen"],["bwash","s","Body wash for dry skin (Dove or Nivea Creme)",90,"Skip heavily scented or foaming gels.",45,"Body wash"]]],
+["Moisturisers",[["moist","s","CeraVe Daily Moisturizing Lotion, 355 ml",270,"Face and neck. Fragrance-free and non-comedogenic.",90,"Face moisturiser"],["blot","s","Body lotion (Vaseline Intensive Care or Nivea)",100,"Apply within 3 minutes of showering.",45,"Body lotion"]]],
+["Work shirts and chinos",[["wshirt","c","2 short-sleeve button shirts, oxford or linen blend",170,"Small standard or camp collar. Fit the chest, not loose."],["chino","c","Straight-leg chinos, khaki or navy",140,"Straight legs balance a slim frame."],["belt","a","Leather belt, black or brown",50,"Worn even with untucked shirts."]]],
+["Serums",[["ha","s","Hyaluronic acid serum (The Ordinary 2% + B5)",180,"Apply to damp skin, then moisturiser. Start with this one.",60,"Hyaluronic serum"],["nia","s","Niacinamide serum (The Ordinary 10% + Zinc)",180,"Add it 2 weeks after the HA serum, 3 nights a week at first.",60,"Niacinamide serum"]]],
+["Home cleaning starter",[["pods","h","Colour-safe laundry detergent pods",110,"For the washing machine."],["micro","h","Microfibre cloths, 12-pack",50,"Dusting, surfaces, screens."],["brush","h","Scrub brush set for kitchen and bathroom",60,""],["tbrush","h","Toilet brush with holder",60,""]]],
+["Casual tees and jeans",[["tees","c","3 heavyweight cotton tees (white, black, olive)",150,"Thicker cotton holds shape on a lean frame."],["jeans","c","Straight-leg jeans or cargo trousers",170,"Avoid skinny cuts."],["socks","c","Ankle socks, 6 pairs",50,""]]],
+["Sneakers",[["snk","c","Minimal sneakers, white or off-white",250,"Check photo reviews and sizing notes."],["snkkit","a","Sneaker cleaning kit",50,""]]],
+["Home and sleep top-up",[["ltee","c","2 soft lounge tees",80,"Skip anything you already own."],["sleep","c","2 pairs of sleep shorts",90,""],["slides","c","Slides",60,""]]],
+["Accessories",[["sun","a","Sunglasses, UV400, round or soft-square",60,"Softer frames suit a slim face."],["chain","a","Thin silver chain, 2 to 3 mm",60,"A slim width suits a slender neck."],["brace","a","Minimal bracelet",40,""],["cap","a","Plain cap",45,""],["wallet","a","Slim wallet",70,""]]],
+["Smart outfit for interviews and meetings",[["oxford","c","Slim-fit oxford shirt, white or light blue",110,"Wear untucked or tucked."],["trous","c","Dark tailored trousers",170,""],["dsocks","c","Dark socks, 3 pairs",40,""]]],
+["Smart shoes and bag",[["shoes","c","Loafers or derby shoes, black or brown",200,""],["bag","a","Sling or crossbody bag",100,"Fits a phone, charger and notebook."]]],
+["Events outfit",[["kaftan","c","Fitted kaftan or African-print shirt",150,"Weddings, church, funerals."],["evtrous","c","Matching or neutral trousers",130,""]]],
+["Gym kit",[["gtee","c","2 breathable training tees",80,""],["gshort","c","2 training shorts",80,""]]],
+["Home cleaning round two",[["mop","h","Spin mop and bucket",200,""],["hamper","h","Foldable laundry hamper",80,""],["lint","h","Lint roller or clothes brush",30,""]]]
 ];
-let S={},cfg=null;
-try{S=JSON.parse(localStorage.getItem("fsp")||"{}")}catch(e){}
-const $=s=>document.querySelector(s);
-const put=()=>{try{localStorage.setItem("fsp",JSON.stringify(S))}catch(e){}};
+const CFG=window.FS_CONFIG||{},KEY="fsp2",DAY=864e5;
+const ITEMS={};R.forEach((r,i)=>r[1].forEach(it=>ITEMS[it[0]]={it,round:i}));
+
+/* ---------- dates (all as "YYYY-MM-DD", counted in whole days) ---------- */
+const pad=n=>String(n).padStart(2,"0");
+const today=()=>{const n=new Date();return n.getFullYear()+"-"+pad(n.getMonth()+1)+"-"+pad(n.getDate())};
+const ms=s=>Date.parse(s+"T00:00:00Z");
+const addD=(s,n)=>new Date(ms(s)+n*DAY).toISOString().slice(0,10);
+const diffD=(a,b)=>Math.round((ms(b)-ms(a))/DAY);
+const fmtD=s=>new Date(ms(s)).toLocaleDateString("en-GB",{timeZone:"UTC",weekday:"short",day:"numeric",month:"short"});
 const gh=n=>"GH₵ "+Math.round(n).toLocaleString("en-GB");
-const done=i=>R[i][1].every((_,j)=>{const s=S[i+"."+j];return s&&(s.b||s.x)});
-const sum=i=>R[i][1].reduce((t,it,j)=>{const s=S[i+"."+j]||{};return s.x?t:t+(s.p!=null?s.p:it[2])},0);
-const cats=i=>[...new Set(R[i][1].map(x=>N[x[0]]))].join(", ");
-const ln=i=>`<li class="ln"><span>Round ${i+1}: ${R[i][0]}<small>${cats(i)}</small></span><b>${gh(sum(i))}</b></li>`;
-function row(i,j){
-  const it=R[i][1][j],k=i+"."+j,s=S[k]||{},p=s.p!=null?s.p:it[2];
-  return `<li class="${s.b?"b ":""}${s.x?"x":""}"><button class="ck" data-a="b" data-k="${k}" aria-pressed="${!!s.b}" aria-label="Bought: ${it[1]}"></button><div class="tx"><b>${it[1]}</b>${it[3]?`<span>${it[3]}</span>`:""}<span>${W[it[0]]}${s.x?", skipped":""} <button class="lk" data-a="x" data-k="${k}">${s.x?"Undo skip":"Skip, I own this"}</button></span></div><button class="pr" data-a="p" data-k="${k}" aria-label="Edit price">${gh(p)}</button></li>`;
+
+/* ---------- saved state ---------- */
+const fresh=()=>({v:2,anchor:today(),allow:400,shopAt:"09:00",nudgeAt:"10:00",items:{},refill:{},log:[],push:false,id:null});
+let S=load(),pushMsg="";
+function load(){
+  let s=null;try{s=JSON.parse(localStorage.getItem(KEY))}catch(e){}
+  if(!s){s=fresh();try{const old=JSON.parse(localStorage.getItem("fsp")||"null");if(old)migrate(old,s)}catch(e){}}
+  return Object.assign(fresh(),s);
 }
-function meter(t){
-  const c=t>CAP?"var(--bad)":t>GOAL?"var(--gold)":"var(--ok)";
-  return `<div class="mt" role="img" aria-label="${gh(t)} against a ${gh(GOAL)} target and ${gh(CAP)} cap"><i style="width:${Math.min(t/CAP,1)*100}%;background:${c}"></i><u></u></div><p class="mk">Target ${gh(GOAL)} (the line). Hard cap ${gh(CAP)} (the end).</p>`;
+function migrate(old,s){ // carry over ticks from the first version
+  for(const k in old){const[i,j]=k.split(".").map(Number),it=R[i]&&R[i][1][j];if(!it)continue;
+    const o=old[k],e={};if(o.p!=null)e.p=o.p;
+    if(o.x)e.st="skip";else if(o.b){e.st=it[1]=="s"?"got":"ord";e.d=today()}
+    s.items[it[0]]=e}
+}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+
+/* ---------- money and progress ---------- */
+const temu=id=>ITEMS[id].it[1]!="s";
+const st=id=>(S.items[id]||{}).st;
+const price=id=>{const e=S.items[id];return e&&e.p!=null?e.p:ITEMS[id].it[3]};
+const settled=id=>["ord","got","skip"].includes(st(id));
+const roundDone=i=>R[i][1].every(it=>settled(it[0]));
+const curRound=()=>R.findIndex((_,i)=>!roundDone(i));
+const period=d=>Math.floor(diffD(S.anchor,d)/14);
+const curP=()=>Math.max(0,period(today()));
+const pStart=p=>addD(S.anchor,p*14);
+const nextShop=()=>{const n=diffD(S.anchor,today());return n<=0?S.anchor:addD(S.anchor,Math.ceil(n/14)*14)};
+function payments(){
+  const out=[];
+  for(const id in S.items){const e=S.items[id];if(ITEMS[id]&&(e.st=="ord"||e.st=="got")&&e.d)out.push({n:ITEMS[id].it[2],p:price(id),d:e.d})}
+  return out.concat(S.log);
+}
+const spentIn=(a,b)=>payments().filter(x=>x.d>=a&&x.d<b).reduce((t,x)=>t+x.p,0);
+const spent=()=>payments().reduce((t,x)=>t+x.p,0);
+const wallet=()=>S.allow*(curP()+1)-spent();
+const carried=()=>S.allow*curP()-spentIn("0000-00-00",pStart(curP()));
+
+/* ---------- refills ---------- */
+function refillDue(id){
+  const it=ITEMS[id].it;if(!it[5])return null;
+  const r=S.refill[id],e=S.items[id]||{};
+  const last=r&&r.last||(e.st=="got"?e.d:null);if(!last)return null;
+  let due=addD(last,it[5]-7); // flag it about a week before it runs out
+  if(r&&r.snooze&&r.snooze>due)due=r.snooze;
+  return due;
+}
+const dueRefills=()=>Object.keys(ITEMS).filter(id=>{const d=refillDue(id),r=S.refill[id];if(r&&r.snooze&&r.snooze>today())return false;return d&&d<=addD(today(),14)});
+const refillPrice=id=>{const r=S.refill[id];return r&&r.p!=null?r.p:price(id)};
+const needs=i=>(i<0?0:R[i][1].filter(it=>!settled(it[0])).reduce((t,it)=>t+price(it[0]),0))+dueRefills().reduce((t,id)=>t+refillPrice(id),0);
+
+/* ---------- drawing ---------- */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const ago=d=>{const n=diffD(d,today());return n<=0?"today":n==1?"yesterday":n+" days ago"};
+function row(id){
+  const it=ITEMS[id].it,e=S.items[id]||{},s=e.st;
+  let where=temu(id)?"Temu":"Buy locally";
+  if(s=="ord")where="Ordered on Temu "+ago(e.d);
+  if(s=="got")where=(temu(id)?"Arrived":"Bought")+" "+fmtD(e.a||e.d);
+  if(s=="skip")where="Skipped";
+  const label=temu(id)?(s=="ord"?"Ordered":"Mark ordered"):"Mark bought";
+  return `<li class="${s=="ord"||s=="got"?"done":""}${s=="skip"?" x":""}">`+
+   `<button class="ck" data-a="buy" data-k="${id}" data-s="${s||""}" aria-label="${label}: ${esc(it[2])}"></button>`+
+   `<div class="tx"><b>${esc(it[2])}</b>${it[4]?`<span>${esc(it[4])}</span>`:""}<span>${where}`+
+   `${s=="ord"?` <button class="lk" data-a="arrived" data-k="${id}">Mark arrived</button>`:""}`+
+   `${!s||s=="skip"?` <button class="lk" data-a="skip" data-k="${id}">${s=="skip"?"Undo skip":"Skip, I own this"}</button>`:""}</span></div>`+
+   `<button class="pr" data-a="price" data-k="${id}" aria-label="Edit price of ${esc(it[2])}">${gh(price(id))}</button></li>`;
+}
+function refillRow(id){
+  const it=ITEMS[id].it,d=refillDue(id);
+  const whenTxt=d<=today()?"About a week left now":"About a week left by "+fmtD(d);
+  return `<li><button class="ck" data-a="refill" data-k="${id}" aria-label="Mark bought: ${esc(it[6])} refill"></button>`+
+   `<div class="tx"><b>${esc(it[6])} refill</b><span>${whenTxt}. Buy locally.</span>`+
+   `<span><button class="lk" data-a="snooze" data-k="${id}">Still have plenty</button></span></div>`+
+   `<button class="pr" data-a="rprice" data-k="${id}" aria-label="Edit refill price">${gh(refillPrice(id))}</button></li>`;
 }
 function draw(){
-  const cur=R.findIndex((_,i)=>!done(i));let h="";
-  if(cur<0)h="<section><h2>Every round is done</h2></section>";
+  const cur=curRound(),w=wallet(),need=needs(cur),refills=dueRefills(),ns=nextShop(),gap=diffD(today(),ns);
+  $("#when").textContent=gap==0?"Today is shop day":"Next shop day: "+fmtD(ns)+(gap==1?" (tomorrow)":" (in "+gap+" days)");
+  const c=carried();
+  let h=`<section><p class="rn">Available to spend</p><div class="big">${gh(w)}</div>`+
+   `<p class="mk">${gh(S.allow)} a fortnight${c>0?`, including ${gh(c)} carried over`:c<0?`, less ${gh(-c)} overspent earlier`:""}.</p></section>`;
+  const ords=Object.keys(S.items).filter(id=>ITEMS[id]&&st(id)=="ord");
+  if(cur<0&&!refills.length)h+=`<section><h2>Every round is done</h2><p class="sm">Refills will show up here when your skincare runs low.</p></section>`;
   else{
-    const t=sum(cur),up=R.map((_,i)=>i).filter(i=>i>cur);
-    h=`<section><p class="rn">Round ${cur+1} of ${R.length}</p><h2>${R[cur][0]}</h2><div class="big">${gh(t)}</div>${meter(t)}<ul>${R[cur][1].map((_,j)=>row(cur,j)).join("")}</ul><p class="sm">Tick an item when you buy it. Tap a price to change it to what you paid.</p></section>`;
-    if(up.length)h+=`<details><summary>Coming up (${up.length})</summary><ul>${up.map(ln).join("")}</ul></details>`;
+    const over=need>w;
+    h+=`<section>${cur<0?`<h2>Refills</h2>`:`<p class="rn">Round ${cur+1} of ${R.length}</p><h2>${esc(R[cur][0])}</h2>`}`+
+     `<p class="rn">Still to buy</p><div class="big">${gh(need)}</div>`+
+     `<div class="mt" role="img" aria-label="${gh(need)} still to buy, ${gh(w)} available"><i style="width:${w>0?Math.min(need/w,1)*100:100}%;background:${over?"var(--bad)":need>w*.85?"var(--gold)":"var(--ok)"}"></i></div>`+
+     `<p class="mk">${over?`<span class="warn">${gh(need-w)} more than you have.</span> Buy what fits now and leave the rest for next fortnight.`:`${gh(w-need)} left after this round.`}</p>`;
+    if(cur>=0)h+=`<ul>${R[cur][1].map(it=>row(it[0])).join("")}</ul>`;
+    if(refills.length)h+=`<h3>Running low</h3><ul>${refills.map(refillRow).join("")}</ul>`;
+    h+=`<p class="sm">Tick an item when you pay for it. Temu items move to "On the way" until you mark them arrived. Tap a price to change it to what you paid.</p></section>`;
   }
-  const dn=R.map((_,i)=>i).filter(done);
-  if(dn.length)h+=`<details><summary>Bought (${dn.length})</summary><ul>${dn.map(ln).join("")}</ul></details>`;
-  h+=`<p class="sm"><button class="lk" data-a="r">Reset all progress</button></p>`;
+  if(ords.length)h+=`<section><h3>On the way (${ords.length})</h3><ul>${ords.map(id=>`<li><div class="tx"><b>${esc(ITEMS[id].it[2])}</b><span>Ordered ${ago(S.items[id].d)}${diffD(S.items[id].d,today())>=30?". Check the order in Temu.":""}</span></div><button class="bt alt" data-a="arrived" data-k="${id}">Arrived</button></li>`).join("")}</ul></section>`;
+  const up=R.map((_,i)=>i).filter(i=>i>cur&&cur>=0);
+  if(up.length)h+=`<details><summary>Coming up (${up.length})</summary><ul>${up.map(i=>`<li class="ln"><span>Round ${i+1}: ${esc(R[i][0])}</span><b>${gh(R[i][1].filter(it=>st(it[0])!="skip").reduce((t,it)=>t+price(it[0]),0))}</b></li>`).join("")}</ul></details>`;
+  h+=history()+settings();
   $("#app").innerHTML=h;
 }
-function when(){
-  if(!cfg)return;
-  const a=new Date(cfg.anchor+"T00:00:00"),t=new Date();t.setHours(0,0,0,0);
-  const d=Math.round((t-a)/864e5),n=d>0?Math.ceil(d/14):0;
-  const nx=new Date(a.getTime()+n*14*864e5),g=Math.round((nx-t)/864e5);
-  const f=x=>x.toLocaleDateString("en-GB",{weekday:"short",day:"numeric",month:"short"});
-  $("#when").textContent="Next shop day: "+f(nx)+(g==0?" (today)":g==1?" (tomorrow)":" (in "+g+" days)");
-  $("#rem").innerHTML=`<details><summary>Reminders</summary><p class="sm">Install the ntfy app and subscribe to <b>${cfg.topic}</b>. A reminder arrives every 14 days, starting ${f(a)}.</p></details>`;
+function history(){
+  const p=curP(),rows=[];
+  for(let k=p;k>=0;k--){
+    const a=pStart(k),b=addD(a,14),list=payments().filter(x=>x.d>=a&&x.d<b),t=list.reduce((s,x)=>s+x.p,0);
+    if(!list.length&&k!=p)continue;
+    rows.push(`<li class="ln"><span>${fmtD(a)} to ${fmtD(addD(b,-1))}<small>${list.length?list.map(x=>esc(x.n)).join(", "):"Nothing yet"}</small></span><b>${gh(t)}${k<p?`<small>${t<=S.allow?gh(S.allow-t)+" under":gh(t-S.allow)+" over"}</small>`:""}</b></li>`);
+  }
+  return `<details><summary>History (${gh(spent())} spent)</summary><ul>${rows.join("")}</ul></details>`;
 }
+function settings(){
+  const ok="serviceWorker" in navigator&&"PushManager" in window;
+  return `<details${pushMsg?" open":""}><summary>Settings</summary>`+
+   `<h3>Reminders</h3><p class="sm">${S.push?`On. You'll get a reminder at ${S.shopAt} on shop day, a nudge 3 days later at ${S.nudgeAt} if you haven't bought anything, and a note when skincare runs low.`:"Off."}</p>`+
+   (ok?(S.push?`<button class="bt" data-a="test">Send a test</button><button class="bt alt" data-a="pushoff">Turn off</button>`:`<button class="bt" data-a="pushon">Turn on reminders</button>`):`<p class="sm">This browser can't receive reminders. Open the app from your home screen in Chrome.</p>`)+
+   `<p class="sm" id="pst" role="status">${esc(pushMsg)}</p>`+
+   `<h3>Schedule and budget</h3>`+
+   `<label>First shop day <input type="date" data-f="anchor" value="${S.anchor}"></label>`+
+   `<label>Shop-day reminder <input type="time" data-f="shopAt" value="${S.shopAt}"></label>`+
+   `<label>Nudge 3 days later <input type="time" data-f="nudgeAt" value="${S.nudgeAt}"></label>`+
+   `<label>Budget per fortnight (GH₵) <input type="number" inputmode="numeric" min="0" step="10" data-f="allow" value="${S.allow}"></label>`+
+   `<p class="sm">Unspent budget carries into the next fortnight.</p>`+
+   `<h3>Backup</h3><p class="sm">Your progress is saved on this phone only.</p>`+
+   `<button class="bt alt" data-a="export">Download backup</button><button class="bt alt" data-a="import">Restore a backup</button>`+
+   `<p class="sm"><button class="lk" data-a="reset">Reset all progress</button></p></details>`;
+}
+
+/* ---------- actions ---------- */
+function changed(){save();draw();sync()}
 document.addEventListener("click",e=>{
   const b=e.target.closest("button[data-a]");if(!b)return;
-  const a=b.dataset.a,k=b.dataset.k;
-  if(a=="r"){if(confirm("Clear all ticks and prices?")){S={};put();draw()}return}
-  const it=R[k.split(".")[0]][1][k.split(".")[1]],s=S[k];
-  if(a=="b"){if(s&&s.b)delete S[k];else S[k]={b:1,p:s&&s.p!=null?s.p:it[2]}}
-  if(a=="x"){if(s&&s.x)delete S[k];else S[k]={x:1}}
-  if(a=="p"){const v=prompt("Price in GH₵",s&&s.p!=null?s.p:it[2]);if(v===null)return;const n=parseFloat(v);if(isNaN(n))return;S[k]={...(s||{}),p:n}}
-  put();draw();
+  const a=b.dataset.a,id=b.dataset.k,cur=S.items[id]||{};
+  if(a=="buy"){
+    if(cur.st=="ord"||cur.st=="got"){if(!confirm("Undo this purchase?"))return;delete cur.st;delete cur.d;delete cur.a;S.items[id]=cur}
+    else S.items[id]={...cur,st:temu(id)?"ord":"got",d:today(),p:price(id)};
+  }
+  else if(a=="arrived"){S.items[id]={...cur,st:"got",a:today()}}
+  else if(a=="skip"){if(cur.st=="skip")delete cur.st;else cur.st="skip";S.items[id]=cur}
+  else if(a=="price"||a=="rprice"){
+    const v=prompt("Price in GH₵",a=="price"?price(id):refillPrice(id));if(v===null)return;const n=parseFloat(v);if(isNaN(n)||n<0)return;
+    if(a=="price")S.items[id]={...cur,p:n};else S.refill[id]={...(S.refill[id]||{}),p:n};
+  }
+  else if(a=="refill"){const p=refillPrice(id);S.log.push({n:ITEMS[id].it[6]+" refill",p,d:today()});S.refill[id]={last:today(),p}}
+  else if(a=="snooze"){S.refill[id]={...(S.refill[id]||{}),snooze:addD(today(),7)}}
+  else if(a=="pushon")return enablePush();
+  else if(a=="pushoff")return disablePush();
+  else if(a=="test")return testPush();
+  else if(a=="export")return exportData();
+  else if(a=="import")return $("#restore").click();
+  else if(a=="reset"){if(!confirm("Clear every purchase, refill and setting?"))return;const keep={push:S.push,id:S.id};S=Object.assign(fresh(),keep)}
+  else return;
+  changed();
 });
+document.addEventListener("change",e=>{
+  const f=e.target.dataset&&e.target.dataset.f;if(!f)return;
+  const v=e.target.value;
+  if(f=="allow"){const n=parseFloat(v);if(isNaN(n)||n<0)return;S.allow=n}
+  else if(f=="anchor"){if(!/^\d{4}-\d{2}-\d{2}$/.test(v))return;S.anchor=v}
+  else{if(!/^\d{2}:\d{2}$/.test(v))return;S[f]=v}
+  changed();
+});
+function exportData(){
+  const blob=new Blob([JSON.stringify(S,null,1)],{type:"application/json"}),a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);a.download="fortnight-shop-"+today()+".json";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),5000);
+}
+$("#restore").addEventListener("change",async e=>{
+  const f=e.target.files[0];e.target.value="";if(!f)return;
+  try{const s=JSON.parse(await f.text());if(!s||s.v!==2||typeof s.items!="object")throw 0;
+    if(!confirm("Replace what's on this phone with the backup?"))return;
+    S=Object.assign(fresh(),s,{push:S.push,id:S.id});changed();
+  }catch(_){alert("That file isn't a Fortnight Shop backup.")}
+});
+
+/* ---------- reminders (Web Push through the shared Cloudflare worker) ---------- */
+function status(m){pushMsg=m;const el=$("#pst");if(el)el.textContent=m}
+const rid=()=>{if(!S.id){S.id=[...crypto.getRandomValues(new Uint8Array(16))].map(b=>b.toString(16).padStart(2,"0")).join("");save()}return S.id};
+const vkey=s=>Uint8Array.from(atob(s.replace(/-/g,"+").replace(/_/g,"/")+"===".slice((s.length+3)%4)),c=>c.charCodeAt(0));
+const configured=()=>CFG.worker&&CFG.vapidPublic&&!/PASTE/.test(CFG.vapidPublic);
+async function post(path,body){
+  const r=await fetch(CFG.worker.replace(/\/+$/,"")+path,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
+  let j={};try{j=await r.json()}catch(_){}
+  if(!r.ok)throw new Error(j.error||"The reminder server replied "+r.status+".");
+  return j;
+}
+async function getSub(create){
+  const reg=await navigator.serviceWorker.ready;let sub=await reg.pushManager.getSubscription();
+  if(!sub&&create)sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:vkey(CFG.vapidPublic)});
+  return sub;
+}
+function reminders(){
+  const cur=curRound(),list=[],t=today();
+  const what=cur<0?"Every round is done. Open the app to check your refills.":`Round ${cur+1}: ${R[cur][0]}. About ${gh(needs(cur))} to spend.`;
+  list.push({tag:"shop",title:"Shopping day",body:what,days:[],times:[S.shopAt],start:S.anchor,every:14});
+  list.push({tag:"nudge",title:"Shopping still to do",body:"Nothing bought yet this fortnight. "+what,days:[],times:[S.nudgeAt],start:addD(S.anchor,3),every:14});
+  for(const id in ITEMS){const d=refillDue(id);if(d&&d>=t&&list.length<10)
+    list.push({tag:("refill-"+id).slice(0,32),title:"Running low: "+ITEMS[id].it[6],body:`About a week of ${ITEMS[id].it[6].toLowerCase()} left. It's on your list in the app.`,days:[],dates:[d],times:[S.shopAt]})}
+  return list;
+}
+function doneInfo(){ // skip this fortnight's nudge once anything has been bought in it
+  const a=pStart(curP());return spentIn(a,addD(a,14))>0||payments().some(x=>x.d>=a&&x.d<addD(a,14))?{date:addD(a,3),tags:["nudge"]}:null;
+}
+async function syncNow(){
+  if(!S.push||!configured())return;
+  const sub=await getSub(Notification.permission==="granted");
+  if(!sub)throw new Error("This phone lost its reminder subscription. Turn reminders off, then on again.");
+  await post("/sync",{id:rid(),sub:sub.toJSON(),tz:Intl.DateTimeFormat().resolvedOptions().timeZone,reminders:reminders(),done:doneInfo()});
+}
+let timer;function sync(){if(!S.push)return;clearTimeout(timer);timer=setTimeout(()=>syncNow().then(()=>{if(pushMsg&&!/on\.|sent/i.test(pushMsg))status("")}).catch(e=>status(e.message)),1200)}
+async function enablePush(){
+  if(!configured())return status("Add the worker address and public key in config.js first.");
+  const p=await Notification.requestPermission();
+  if(p!=="granted")return status("Notifications are blocked. Allow them for this site in Chrome's site settings, then try again.");
+  try{await getSub(true);S.push=true;save();await syncNow();status("Reminders are on.")}
+  catch(e){S.push=false;save();status(e.message)}
+  draw();
+}
+async function disablePush(){
+  try{await post("/remove",{id:rid()});const s=await getSub(false);if(s)await s.unsubscribe()}catch(_){}
+  S.push=false;save();status("Reminders are off.");draw();
+}
+async function testPush(){
+  try{await syncNow();await post("/test",{id:rid()});status("Test sent. It should arrive in a few seconds.")}
+  catch(e){status(e.message)}
+}
+
 draw();
-fetch("config.json",{cache:"no-store"}).then(r=>r.json()).then(c=>{cfg=c;when()}).catch(()=>{});
-if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js");
+if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").then(()=>sync());
+document.addEventListener("visibilitychange",()=>{if(!document.hidden){draw();sync()}});
 </script></body></html>
